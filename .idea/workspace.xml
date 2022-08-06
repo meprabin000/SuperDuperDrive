@@ -4,47 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da0d9b2c-683f-4233-a9db-a70e69fd9514" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/config/SecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/controllers/HomeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/controllers/LoginController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/controllers/SignupController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/forms/ButtonForm.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/forms/CredentialForm.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/mappers/CredentialMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/mappers/FileMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/mappers/NoteMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/mappers/UserMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/models/Credential.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/models/File.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/models/Note.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/models/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/AuthenticationService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/CredentialService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/EncryptionService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/FileService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/HashService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/HomeService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/NoteService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/UserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/schema.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/bootstrap.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/bootstrap.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/jquery-slim.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/popper.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/error.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/home.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/result.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/signup.html" afterDir="false" />
+    <list default="true" id="da0d9b2c-683f-4233-a9db-a70e69fd9514" name="Changes" comment="Built a starter template. Implemented mapper, services, and controller for saving credentials. Created Encryption Service for hashing and storing the password in the database. User can add, edit, and delete credentials now.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/forms/FileForm.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/forms/NoteForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/controllers/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/controllers/HomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/mappers/FileMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/mappers/FileMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/mappers/NoteMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/mappers/NoteMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/models/File.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/models/File.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/FileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/NoteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/NoteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/home.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,6 +90,14 @@
       <option name="presentableId" value="Default" />
       <updated>1659451105933</updated>
     </task>
+    <task id="LOCAL-00001" summary="Built a starter template. Implemented mapper, services, and controller for saving credentials. Created Encryption Service for hashing and storing the password in the database. User can add, edit, and delete credentials now.">
+      <created>1659733919579</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1659733919579</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -132,6 +110,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Built a starter template. Implemented mapper, services, and controller for saving credentials. Created Encryption Service for hashing and storing the password in the database. User can add, edit, and delete credentials now." />
+    <option name="LAST_COMMIT_MESSAGE" value="Built a starter template. Implemented mapper, services, and controller for saving credentials. Created Encryption Service for hashing and storing the password in the database. User can add, edit, and delete credentials now." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/SuperDuperDrive$Main.ic" NAME="Main Coverage Results" MODIFIED="1659712515278" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">

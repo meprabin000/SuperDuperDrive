@@ -10,16 +10,19 @@ public class File {
     private String contentType;
     private String fileSize;
     private Integer userId;
-    private Blob fileData;
 
-    public File(Integer fileId, String filename, String contentType, String fileSize, Integer userId, Blob fileData) {
+    private byte[] fileData;
+
+    public File(Integer fileId, String filename, String contentType, String fileSize, Integer userId, byte[] fileData) {
         this.fileId = fileId;
         this.filename = filename;
         this.contentType = contentType;
         this.fileSize = fileSize;
-        this.userId = userId;
         this.fileData = fileData;
+        this.userId = userId;
     }
+
+
 
     public Integer getFileId() {
         return fileId;
@@ -61,11 +64,11 @@ public class File {
         this.userId = userId;
     }
 
-    public Blob getFileData() {
+    public byte[] getFileData() {
         return fileData;
     }
 
-    public void setFileData(Blob fileData) {
+    public void setFileData(byte[] fileData) {
         this.fileData = fileData;
     }
 }
