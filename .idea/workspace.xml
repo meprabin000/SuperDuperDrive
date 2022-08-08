@@ -4,16 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da0d9b2c-683f-4233-a9db-a70e69fd9514" name="Changes" comment="Built a starter template. Implemented mapper, services, and controller for saving credentials. Created Encryption Service for hashing and storing the password in the database. User can add, edit, and delete credentials now.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/forms/FileForm.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/forms/NoteForm.java" afterDir="false" />
+    <list default="true" id="da0d9b2c-683f-4233-a9db-a70e69fd9514" name="Changes" comment="Implemented File service. File download, delete, and view feature added.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/controllers/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/controllers/HomeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/mappers/FileMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/mappers/FileMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/mappers/NoteMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/mappers/NoteMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/models/File.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/models/File.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/mappers/CredentialMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/mappers/CredentialMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/CredentialService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/CredentialService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/FileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/NoteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/NoteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/HomeService.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/home.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,7 +45,6 @@
     "DefaultHtmlFileTemplate": "HTML File",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0"
@@ -97,7 +93,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659733919579</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added NoteMapper, NoteService, and built controllers for note feature. Added FileMapper, FileService, and built controllers to upload file as a blob object.">
+      <created>1659813116095</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1659813116095</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -113,7 +116,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Built a starter template. Implemented mapper, services, and controller for saving credentials. Created Encryption Service for hashing and storing the password in the database. User can add, edit, and delete credentials now." />
-    <option name="LAST_COMMIT_MESSAGE" value="Built a starter template. Implemented mapper, services, and controller for saving credentials. Created Encryption Service for hashing and storing the password in the database. User can add, edit, and delete credentials now." />
+    <MESSAGE value="Added NoteMapper, NoteService, and built controllers for note feature. Added FileMapper, FileService, and built controllers to upload file as a blob object." />
+    <MESSAGE value="Implemented File service. File download, delete, and view feature added." />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented File service. File download, delete, and view feature added." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/SuperDuperDrive$Main.ic" NAME="Main Coverage Results" MODIFIED="1659712515278" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">

@@ -11,25 +11,31 @@ import com.cloudstorage.models.User;
 import com.cloudstorage.services.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import java.io.ByteArrayInputStream;
 import java.util.Optional;
 
 @Controller
 public class HomeController {
     private Logger logger;
-    private HomeService homeService;
+    private CredentialService credentialService;
     private NoteService noteService;
     private UserService userService;
     private FileService fileService;
     
 
-    public HomeController(HomeService homeService, NoteService noteService, UserService userService, FileService fileService) {
-        this.homeService = homeService;
+    public HomeController(CredentialService credentialService, NoteService noteService, UserService userService, FileService fileService) {
+        this.credentialService = credentialService;
         this.noteService = noteService;
         this.userService = userService;
         this.fileService = fileService;
@@ -43,42 +49,30 @@ public class HomeController {
     public String defaultModelData(Model model) {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("notes", noteService.getNotesFor(userService.getUser(currentUsername).getUserId()));
-        model.addAttribute("credentials", homeService.getCredentialsFor(currentUsername));
+        model.addAttribute("credentials", credentialService.getCredentialsFor(userService.getUser(currentUsername).getUserId()));
         model.addAttribute("files", fileService.getFilesFor(userService.getUser(currentUsername).getUserId()));
         return currentUsername;
     }
 
 
-    @GetMapping(value = {"/home", "/credential", "/deleteCredential", "/updateCredential", "/note", "/deleteNote", "/addFile", "/deleteFile"})
+    @GetMapping(value = {"/home", "/addCredential", "/deleteCredential", "/note", "/deleteNote", "/addFile", "/deleteFile"})
     public String homeView(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model) {
         String currentUsername = defaultModelData(model);
         return "home";
     }
 
-    @PostMapping("/credential")
+    @PostMapping("/addCredential")
     public String addCredential(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model) {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        if(credentialForm.getCredentialId() != null)
-            homeService.updateCredential(currentUsername,credentialForm);
-        else
-            homeService.addCredential(credentialForm, currentUsername);
-
+        Integer userId = userService.getUser(currentUsername).getUserId();
+        if(credentialForm.getCredentialId() == null) credentialService.createCredential(credentialForm, userId); else credentialService.updateCredential(credentialForm);
         defaultModelData(model);
         return "home";
     }
 
     @PostMapping("/deleteCredential")
     public String deleteCredential(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model) {
-        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        homeService.deleteCredential(currentUsername, buttonForm.getButtonId());
-        defaultModelData(model);
-        return "home";
-    }
-
-    @PostMapping("/updateCredential")
-    public String updateCredential(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model) {
-        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        homeService.updateCredential(currentUsername,credentialForm);
+        credentialService.deleteCredential(buttonForm.getButtonId());
         defaultModelData(model);
         return "home";
     }
@@ -86,8 +80,7 @@ public class HomeController {
     @GetMapping("getCredential")
     @ResponseBody
     public Optional<Credential> getCredential(Integer credentialId) {
-        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        return Optional.of(homeService.getCredentialOf(currentUsername, credentialId));
+        return Optional.of(credentialService.getCrediantialOf(credentialId));
     }
 
     // NOTE CONTROLLER //
@@ -122,7 +115,11 @@ public class HomeController {
         Integer userId = userService.getUser(currentUsername).getUserId();
         if(fileService.isFilenameUsed(userId, fileForm.getFileObj().getOriginalFilename())) {
             model.addAttribute("filenameExistsError", "Filename already exists. Upload a file with unique name.");
-        } else {
+        }
+        else if(fileForm.getFileObj().getOriginalFilename().isEmpty()) {
+            model.addAttribute("filenameExistsError", "Please add some file to upload.");
+        }
+        else {
             model.addAttribute("filenameExistsError", "");
             fileService.createFile(fileForm, userId);
         }
@@ -143,4 +140,19 @@ public class HomeController {
         Integer userId = userService.getUser(currentUsername).getUserId();
         return Optional.of(fileService.isFilenameUsed(userId, filename));
     }
+
+    @GetMapping("download")
+    @ResponseBody
+    public ResponseEntity<Resource> downloadFile(Integer fileId) {
+        File file = fileService.getFileOf(fileId);
+        InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(file.getFileData()));
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", file.getContentType());
+        headers.set("Content-Disposition", String.format("inline; filename="+file.getFilename()));
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(file.getFileData().length)
+                .body(resource);
+    }
+
 }

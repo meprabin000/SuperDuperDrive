@@ -14,11 +14,11 @@ public interface CredentialMapper {
     @Select("SELECT * FROM CREDENTIALS WHERE userId = #{userId}")
     public List<Credential> getCredentialsFor(Integer userId);
 
-    @Select("SELECT * FROM CREDENTIALS WHERE userId = #{userId} AND credentialId = #{credentialId}")
-    public Credential getCredentialOf(Integer userId, Integer credentialId);
+    @Select("SELECT * FROM CREDENTIALS WHERE credentialId = #{credentialId}")
+    public Credential getCredentialOf(Integer credentialId);
 
-    @Delete("DELETE FROM CREDENTIALS WHERE userId = #{userId} AND credentialId = #{credentialId}")
-    public void delete(Integer userId, Integer credentialId);
+    @Delete("DELETE FROM CREDENTIALS WHERE credentialId = #{credentialId}")
+    public void delete(Integer credentialId);
 
     @Update("UPDATE CREDENTIALS SET url = #{url}, username = #{username}, password = #{password} WHERE credentialId = #{credentialId}")
     public void update(Credential credential);

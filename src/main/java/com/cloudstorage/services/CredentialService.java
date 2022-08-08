@@ -25,8 +25,8 @@ public class CredentialService {
         return credentialMapper.getCredentialsFor(userId);
     }
 
-    public Credential getCrediantialOf(Integer userId, Integer credentialId) {
-        Credential credential = credentialMapper.getCredentialOf(userId, credentialId);
+    public Credential getCrediantialOf(Integer credentialId) {
+        Credential credential = credentialMapper.getCredentialOf(credentialId);
         String encodedKey = credential.getKey();
         String password = encryptionService.decryptValue(credential.getPassword(), encodedKey);
         credential.setPassword(password);
@@ -42,12 +42,12 @@ public class CredentialService {
         return credentialMapper.insert(new Credential(null, credentialForm.getUrl(), credentialForm.getUsername(), encodedKey, encryptedPassword, userId));
     }
 
-    public void deleteCredential(Integer userId, Integer credentialId) {
-        credentialMapper.delete(userId, credentialId);
+    public void deleteCredential(Integer credentialId) {
+        credentialMapper.delete(credentialId);
     }
 
-    public void updateCredential(Integer userId, CredentialForm credentialForm) {
-        Credential credential = getCrediantialOf(userId, credentialForm.getCredentialId());
+    public void updateCredential(CredentialForm credentialForm) {
+        Credential credential = getCrediantialOf(credentialForm.getCredentialId());
         String encodedKey = credential.getKey();
         String password = encryptionService.encryptValue(credential.getPassword(), encodedKey);
         credential.setUrl(credentialForm.getUrl());

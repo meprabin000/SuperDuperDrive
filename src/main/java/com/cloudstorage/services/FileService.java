@@ -6,15 +6,19 @@ import com.cloudstorage.mappers.FileMapper;
 import com.cloudstorage.models.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import javax.sql.rowset.serial.SerialBlob;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.http.HttpHeaders;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class FileService {
@@ -63,4 +67,5 @@ public class FileService {
     public void deleteFile(Integer fileId) {
         fileMapper.delete(fileId);
     }
+
 }
