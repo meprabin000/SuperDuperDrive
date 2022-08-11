@@ -39,7 +39,7 @@ public class HomeController implements HandlerExceptionResolver {
     private NoteService noteService;
     private UserService userService;
     private FileService fileService;
-    
+
 
     public HomeController(CredentialService credentialService, NoteService noteService, UserService userService, FileService fileService) {
         this.credentialService = credentialService;
@@ -62,8 +62,8 @@ public class HomeController implements HandlerExceptionResolver {
     }
 
 
-    @GetMapping(value = {"/", "/home", "/addCredential", "/deleteCredential", "/note", "/deleteNote", "/addFile", "/deleteFile"})
-    public String homeView(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model, @ModelAttribute(name = "success") String success) {
+    @GetMapping(value = {"/", "/home"})
+    public String homeView(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model, @ModelAttribute(name = "success") String success, @ModelAttribute(name = "error") String error) {
         defaultModelData(model);
         return "home";
     }
@@ -76,8 +76,15 @@ public class HomeController implements HandlerExceptionResolver {
             credentialService.createCredential(credentialForm, userId);
             redirectAttributes.addFlashAttribute("success", "Successfully added a new credential");
         } else {
-            credentialService.updateCredential(credentialForm);
-            redirectAttributes.addFlashAttribute("success", "Successfully updated the credential");
+            Credential credential = credentialService.getCrediantialOf(credentialForm.getCredentialId());
+            if(credential == null) {
+                redirectAttributes.addFlashAttribute("error", "Credential doesn't exist.");
+            } else if(credential.getUserId() != userId) {
+                redirectAttributes.addFlashAttribute("error", "Failed to update credential of a different user");
+            } else {
+                credentialService.updateCredential(credentialForm);
+                redirectAttributes.addFlashAttribute("success", "Successfully updated the credential");
+            }
         }
         defaultModelData(model);
 
@@ -86,8 +93,17 @@ public class HomeController implements HandlerExceptionResolver {
 
     @PostMapping("/deleteCredential")
     public String deleteCredential(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model, RedirectAttributes redirectAttributes) {
-        credentialService.deleteCredential(buttonForm.getButtonId());
-        redirectAttributes.addFlashAttribute("success", "Successfully deleted the credential");
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        Integer userId = userService.getUser(currentUsername).getUserId();
+        Credential credential = credentialService.getCrediantialOf(buttonForm.getButtonId());
+        if(credential == null) {
+            redirectAttributes.addFlashAttribute("error", "Credential doesn't exist.");
+        } else if(credential.getUserId() != userId) {
+            redirectAttributes.addFlashAttribute("error", "Failed to delete credential of a different user");
+        } else {
+            credentialService.deleteCredential(buttonForm.getButtonId());
+            redirectAttributes.addFlashAttribute("success", "Successfully deleted the credential");
+        }
         defaultModelData(model);
         return "redirect:/home";
     }
@@ -114,8 +130,15 @@ public class HomeController implements HandlerExceptionResolver {
             redirectAttributes.addFlashAttribute("success", "Successfully added a new note");
 
         } else {
-            noteService.updateNote(noteForm);
-            redirectAttributes.addFlashAttribute("success", "Successfully updated the note");
+            Note note = noteService.getNoteOf(noteForm.getNoteId());
+            if(note == null) {
+                redirectAttributes.addFlashAttribute("error", "Note doesn't exist.");
+            } else if(note.getUserId() != userId) {
+                redirectAttributes.addFlashAttribute("error", "Failed to update note of a different user");
+            } else {
+                noteService.updateNote(noteForm);
+                redirectAttributes.addFlashAttribute("success", "Successfully updated the note");
+            }
         }
         defaultModelData(model);
         return "redirect:/home";
@@ -123,8 +146,17 @@ public class HomeController implements HandlerExceptionResolver {
 
     @PostMapping("/deleteNote")
     public String deleteNote(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model, RedirectAttributes redirectAttributes) {
-        noteService.deleteNote(buttonForm.getButtonId());
-        redirectAttributes.addFlashAttribute("success", "Successfully deleted the note");
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        Integer userId = userService.getUser(currentUsername).getUserId();
+        Note note = noteService.getNoteOf(buttonForm.getButtonId());
+        if(note == null) {
+            redirectAttributes.addFlashAttribute("error", "Note doesn't exist.");
+        } else if(note.getUserId() != userId) {
+            redirectAttributes.addFlashAttribute("error", "Failed to delete note of a different user");
+        } else {
+            noteService.deleteNote(buttonForm.getButtonId());
+            redirectAttributes.addFlashAttribute("success", "Successfully deleted the note");
+        }
         defaultModelData(model);
         return "redirect:/home";
     }
@@ -132,6 +164,11 @@ public class HomeController implements HandlerExceptionResolver {
     @GetMapping("getNote")
     @ResponseBody
     public Optional<Note> getNote(Integer noteId) {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        Integer userId = userService.getUser(currentUsername).getUserId();
+        Note note = noteService.getNoteOf(noteId);
+        if(note.getUserId() != userId)
+            return Optional.of(null);
         return Optional.of(noteService.getNoteOf(noteId));
     }
 
@@ -142,27 +179,40 @@ public class HomeController implements HandlerExceptionResolver {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         Integer userId = userService.getUser(currentUsername).getUserId();
         if(fileService.isFilenameUsed(userId, fileForm.getFileObj().getOriginalFilename())) {
-            model.addAttribute("filenameExistsError", "Filename already exists. Upload a file with unique name.");
+            redirectAttributes.addFlashAttribute("error", "Filename already exists. Upload a file with unique name.");
         }
         else if(fileForm.getFileObj().getOriginalFilename().isEmpty()) {
-            model.addAttribute("filenameExistsError", "Please add some file to upload.");
+            redirectAttributes.addFlashAttribute("error", "Please add some file to upload.");
         }
         else {
             Integer errorId = fileService.createFile(fileForm, userId);
             if(errorId == -1)
-                model.addAttribute("filenameExistsError", "File Size Exceeded. Upload smaller file.");
-            else
-                model.addAttribute("filenameExistsError", "");
+                redirectAttributes.addFlashAttribute("error", "File Size Exceeded. Upload smaller file.");
+            else{
+                redirectAttributes.addFlashAttribute("error", "");
+                redirectAttributes.addFlashAttribute("success", "Successfully added the file");
+
+            }
+
         }
         defaultModelData(model);
-        redirectAttributes.addFlashAttribute("success", "Successfully added the file");
+
         return "redirect:/home";
     }
 
     @PostMapping("/deleteFile")
     public String deleteFile(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model, RedirectAttributes redirectAttributes) {
-        fileService.deleteFile(buttonForm.getButtonId());
-        redirectAttributes.addFlashAttribute("success", "Successfully deleted the file");
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        Integer userId = userService.getUser(currentUsername).getUserId();
+        File file = fileService.getFileOf(buttonForm.getButtonId());
+        if(file == null) {
+            redirectAttributes.addFlashAttribute("error", "Note doesn't exist.");
+        } else if(file.getUserId() != userId) {
+            redirectAttributes.addFlashAttribute("error", "Failed to delete note of a different user");
+        } else {
+            fileService.deleteFile(buttonForm.getButtonId());
+            redirectAttributes.addFlashAttribute("success", "Successfully deleted the file");
+        }
         defaultModelData(model);
         return "redirect:/home";
     }

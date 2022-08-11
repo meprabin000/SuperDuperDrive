@@ -10,6 +10,7 @@
 </head>
 <body class="p-3 mb-2 bg-light text-black">
 <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success != ''}"></div>
+<div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error != ''}"></div>
 <div class="container">
     <div id="logoutDiv">
         <form action="#" th:action="@{/logout}" method="POST">

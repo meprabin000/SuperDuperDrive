@@ -49,7 +49,7 @@ public class CredentialService {
     public void updateCredential(CredentialForm credentialForm) {
         Credential credential = getCrediantialOf(credentialForm.getCredentialId());
         String encodedKey = credential.getKey();
-        String password = encryptionService.encryptValue(credential.getPassword(), encodedKey);
+        String password = encryptionService.encryptValue(credentialForm.getPassword(), encodedKey);
         credential.setUrl(credentialForm.getUrl());
         credential.setUsername(credentialForm.getUsername());
         credential.setPassword(password);
