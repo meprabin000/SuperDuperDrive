@@ -14,19 +14,26 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.util.Optional;
 
 @Controller
-public class HomeController {
+public class HomeController implements HandlerExceptionResolver {
     private Logger logger;
     private CredentialService credentialService;
     private NoteService noteService;
@@ -55,50 +62,71 @@ public class HomeController {
     }
 
 
-    @GetMapping(value = {"/home", "/addCredential", "/deleteCredential", "/note", "/deleteNote", "/addFile", "/deleteFile"})
-    public String homeView(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model) {
-        String currentUsername = defaultModelData(model);
+    @GetMapping(value = {"/", "/home", "/addCredential", "/deleteCredential", "/note", "/deleteNote", "/addFile", "/deleteFile"})
+    public String homeView(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model, @ModelAttribute(name = "success") String success) {
+        defaultModelData(model);
         return "home";
     }
 
     @PostMapping("/addCredential")
-    public String addCredential(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model) {
+    public String addCredential(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model, RedirectAttributes redirectAttributes) {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         Integer userId = userService.getUser(currentUsername).getUserId();
-        if(credentialForm.getCredentialId() == null) credentialService.createCredential(credentialForm, userId); else credentialService.updateCredential(credentialForm);
+        if(credentialForm.getCredentialId() == null) {
+            credentialService.createCredential(credentialForm, userId);
+            redirectAttributes.addFlashAttribute("success", "Successfully added a new credential");
+        } else {
+            credentialService.updateCredential(credentialForm);
+            redirectAttributes.addFlashAttribute("success", "Successfully updated the credential");
+        }
         defaultModelData(model);
-        return "home";
+
+        return "redirect:/home";
     }
 
     @PostMapping("/deleteCredential")
-    public String deleteCredential(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model) {
+    public String deleteCredential(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model, RedirectAttributes redirectAttributes) {
         credentialService.deleteCredential(buttonForm.getButtonId());
+        redirectAttributes.addFlashAttribute("success", "Successfully deleted the credential");
         defaultModelData(model);
-        return "home";
+        return "redirect:/home";
     }
 
     @GetMapping("getCredential")
     @ResponseBody
     public Optional<Credential> getCredential(Integer credentialId) {
-        return Optional.of(credentialService.getCrediantialOf(credentialId));
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        Integer userId = userService.getUser(currentUsername).getUserId();
+        Credential credential = credentialService.getCrediantialOf(credentialId);
+        if(credential.getUserId() != userId)
+            return Optional.of(null);
+        return Optional.of(credential);
     }
 
     // NOTE CONTROLLER //
 
     @PostMapping("/addNote")
-    public String addNote(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model) {
+    public String addNote(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model, RedirectAttributes redirectAttributes) {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         Integer userId = userService.getUser(currentUsername).getUserId();
-        if(noteForm.getNoteId() == null) noteService.createNote(noteForm, userId); else noteService.updateNote(noteForm);
+        if(noteForm.getNoteId() == null) {
+            noteService.createNote(noteForm, userId);
+            redirectAttributes.addFlashAttribute("success", "Successfully added a new note");
+
+        } else {
+            noteService.updateNote(noteForm);
+            redirectAttributes.addFlashAttribute("success", "Successfully updated the note");
+        }
         defaultModelData(model);
-        return "home";
+        return "redirect:/home";
     }
 
     @PostMapping("/deleteNote")
-    public String deleteNote(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model) {
+    public String deleteNote(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model, RedirectAttributes redirectAttributes) {
         noteService.deleteNote(buttonForm.getButtonId());
+        redirectAttributes.addFlashAttribute("success", "Successfully deleted the note");
         defaultModelData(model);
-        return "home";
+        return "redirect:/home";
     }
 
     @GetMapping("getNote")
@@ -110,7 +138,7 @@ public class HomeController {
     // FILE CONTROLLER //
 
     @PostMapping("/addFile")
-    public String addFile(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model) {
+    public String addFile(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model, RedirectAttributes redirectAttributes) {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         Integer userId = userService.getUser(currentUsername).getUserId();
         if(fileService.isFilenameUsed(userId, fileForm.getFileObj().getOriginalFilename())) {
@@ -120,25 +148,23 @@ public class HomeController {
             model.addAttribute("filenameExistsError", "Please add some file to upload.");
         }
         else {
-            model.addAttribute("filenameExistsError", "");
-            fileService.createFile(fileForm, userId);
+            Integer errorId = fileService.createFile(fileForm, userId);
+            if(errorId == -1)
+                model.addAttribute("filenameExistsError", "File Size Exceeded. Upload smaller file.");
+            else
+                model.addAttribute("filenameExistsError", "");
         }
         defaultModelData(model);
-        return "home";
+        redirectAttributes.addFlashAttribute("success", "Successfully added the file");
+        return "redirect:/home";
     }
 
     @PostMapping("/deleteFile")
-    public String deleteFile(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model) {
+    public String deleteFile(FileForm fileForm, NoteForm noteForm, CredentialForm credentialForm, ButtonForm buttonForm, Model model, RedirectAttributes redirectAttributes) {
         fileService.deleteFile(buttonForm.getButtonId());
+        redirectAttributes.addFlashAttribute("success", "Successfully deleted the file");
         defaultModelData(model);
-        return "home";
-    }
-    @GetMapping("fileExists")
-    @ResponseBody
-    public Optional<Boolean> isFilenameUsed(String filename) {
-        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        Integer userId = userService.getUser(currentUsername).getUserId();
-        return Optional.of(fileService.isFilenameUsed(userId, filename));
+        return "redirect:/home";
     }
 
     @GetMapping("download")
@@ -155,4 +181,15 @@ public class HomeController {
                 .body(resource);
     }
 
+
+    @Override
+    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        ModelAndView modelAndView = new ModelAndView("error");
+        if(ex instanceof MaxUploadSizeExceededException) {
+            modelAndView.getModel().put("errorMessage", "File size exceeds limit!");
+        } else {
+            modelAndView.getModel().put("errorMessage", ex.getMessage());
+        }
+        return modelAndView;
+    }
 }

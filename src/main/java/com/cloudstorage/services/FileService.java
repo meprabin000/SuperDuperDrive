@@ -50,15 +50,18 @@ public class FileService {
 
     public Integer createFile(FileForm fileForm, Integer userId){
         MultipartFile multipartFile = fileForm.getFileObj();
+        if(multipartFile.getSize() > 1000000)
+            return -1;
         String fileName = multipartFile.getOriginalFilename();
         String contentType = multipartFile.getContentType();
         String fileSize = String.valueOf(multipartFile.getSize());
+
         byte[] fileData = null;
         try {
             fileData = multipartFile.getBytes();
         } catch(IOException e) {
             logger.error(e.getMessage());
-            return -1;
+            return -2;
         }
 
         return fileMapper.insert(new File(null,  fileName, contentType, fileSize, userId, fileData));

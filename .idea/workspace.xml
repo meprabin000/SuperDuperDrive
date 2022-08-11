@@ -5,13 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="da0d9b2c-683f-4233-a9db-a70e69fd9514" name="Changes" comment="Implemented File service. File download, delete, and view feature added.">
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/cloudstorage/CloudStorageTestApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/controllers/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/controllers/HomeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/mappers/CredentialMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/mappers/CredentialMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/CredentialService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/CredentialService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/controllers/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/controllers/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/controllers/SignupController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/controllers/SignupController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/FileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloudstorage/services/HomeService.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/signup.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,8 +48,8 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -56,8 +58,11 @@
       <recent name="$PROJECT_DIR$/src/main/resources/static/css" />
       <recent name="$PROJECT_DIR$/src/main/resources/static/css/js/css" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.cloudstorage" />
+    </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.CloudStorageTestApplication">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.cloudstorage.Main" />
       <module name="SuperDuperDrive" />
@@ -71,9 +76,76 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="CloudStorageTestApplication" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SuperDuperDrive" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.cloudstorage.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.cloudstorage" />
+      <option name="MAIN_CLASS_NAME" value="com.cloudstorage.CloudStorageTestApplication" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CloudStorageTestApplication.getLoginPage" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SuperDuperDrive" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.cloudstorage.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.cloudstorage" />
+      <option name="MAIN_CLASS_NAME" value="com.cloudstorage.CloudStorageTestApplication" />
+      <option name="METHOD_NAME" value="getLoginPage" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CloudStorageTestApplication.testCreateNote" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SuperDuperDrive" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.cloudstorage.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.cloudstorage" />
+      <option name="MAIN_CLASS_NAME" value="com.cloudstorage.CloudStorageTestApplication" />
+      <option name="METHOD_NAME" value="testCreateNote" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CloudStorageTestApplication.testRedirection" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SuperDuperDrive" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.cloudstorage.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.cloudstorage" />
+      <option name="MAIN_CLASS_NAME" value="com.cloudstorage.CloudStorageTestApplication" />
+      <option name="METHOD_NAME" value="testRedirection" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.CloudStorageTestApplication" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.CloudStorageTestApplication.testCreateNote" />
+        <item itemvalue="JUnit.CloudStorageTestApplication.testRedirection" />
+        <item itemvalue="JUnit.CloudStorageTestApplication.getLoginPage" />
       </list>
     </recent_temporary>
   </component>
@@ -100,7 +172,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659813116095</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Implemented File service. File download, delete, and view feature added.">
+      <created>1659921099837</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1659921099837</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
